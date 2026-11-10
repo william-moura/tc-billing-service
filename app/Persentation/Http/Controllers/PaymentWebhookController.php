@@ -5,22 +5,23 @@ declare(strict_types=1);
 namespace App\Presentation\Http\Controllers;
 
 use App\Application\UseCases\ProcessPaymentWebhookUseCase;
+use App\Presentation\Http\Requests\MercadoPagoWebhookRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 final class PaymentWebhookController extends Controller
 {
-    public function handle(Request $request, ProcessPaymentWebhookUseCase $useCase): JsonResponse
+    public function handle(MercadoPagoWebhookRequest $request, ProcessPaymentWebhookUseCase $useCase): JsonResponse
     {
-        // Notificação padrão do Mercado Pago via Webhook
-        $type = $request->query('type') ?? $request->input('type');
-        $paymentId = $request->query('data_id') ?? $request->input('data.id');
+        $dto = $request->toDto();
 
-        if ($type === 'payment' && !empty($paymentId)) {
-            $useCase->execute((string) $paymentId);
+        if ($dto !== null && $dto->isPaymentNotification()) {
+            $useCase->execute($dto->paymentId);
         }
 
-        return response()->json(['status' => 'acknowledged'], 200);
+        return response()->json([
+            'status' => 'acknowledged',
+        ], 200);
     }
 }

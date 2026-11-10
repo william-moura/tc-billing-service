@@ -56,7 +56,8 @@ final class RefundPaymentUseCase
         }
 
         // Atualiza o estado da entidade de domínio
-        $invoice->refund($approvedAttempt->getTransactionId());$savedInvoice = $this->repository->save($invoice);
+        $invoice->refund($approvedAttempt->getTransactionId());
+        $savedInvoice = $this->repository->save($invoice);
 
         // Notifica o barramento sobre o estorno efetuado (compensação concluída)
         $this->publisher->publish('queue.payment.refunded', [
