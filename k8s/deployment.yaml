@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tc-billing-api
+  labels:
+    app: tc-billing-service
+    component: api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tc-billing-service
+      component: api
+  template:
+    metadata:
+      labels:
+        app: tc-billing-service
+        component: api
+    spec:
+      containers:
+        - name: api
+          image: tc-billing-service:latest
+          ports:
+            - name: http
+              containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: tc-billing-config
+            - secretRef:
+                name: tc-billing-secret
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          readinessProbe:
+            httpGet:
+              path: /up
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /up
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tc-billing-worker
+  labels:
+    app: tc-billing-service
+    component: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tc-billing-service
+      component: worker
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: tc-billing-service
+        component: worker
+    spec:
+      containers:
+        - name: consumer
+          image: tc-billing-service:latest
+          command: ["php", "artisan", "billing:consume", "--queue=all"]
+          envFrom:
+            - configMapRef:
+                name: tc-billing-config
+            - secretRef:
+                name: tc-billing-secret
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "300m"
+              memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tc-billing-service
+spec:
+  type: ClusterIP
+  selector:
+    app: tc-billing-service
+    component: api
+  ports:
+    - port: 80
+      targetPort: http
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: tc-billing-api-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: tc-billing-api
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

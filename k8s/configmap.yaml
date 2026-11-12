@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tc-billing-config
+  labels:
+    app: tc-billing-service
+data:
+  APP_NAME: "tc-billing-service"
+  APP_ENV: "production"
+  APP_DEBUG: "false"
+  LOG_CHANNEL: "stderr"
+  DB_CONNECTION: "pgsql"
+  DB_HOST: "postgres-billing-service"
+  DB_PORT: "5432"
+  DB_DATABASE: "tc_billing"
+  RABBITMQ_HOST: "rabbitmq-service"
+  RABBITMQ_PORT: "5672"
+  RABBITMQ_VHOST: "/"
