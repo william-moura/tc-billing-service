@@ -1,0 +1,165 @@
+openapi: 3.0.3
+info:
+  title: tc-billing-service API
+  description: |
+    Microsserviço responsável pela geração de orçamentos, registro de faturas e processamento de pagamentos 
+    da oficina mecânica, incluindo integração via Webhook com o Mercado Pago.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8002
+    description: Ambiente Local
+  - url: http://tc-billing-service
+    description: Cluster Kubernetes (Interno)
+
+tags:
+  - name: Invoices
+    description: Faturas e orçamentos vinculados às Ordens de Serviço
+  - name: Payments
+    description: Pagamentos, conciliação e webhooks do Mercado Pago
+
+paths:
+  /api/v1/invoices:
+    get:
+      tags:
+        - Invoices
+      summary: Lista as faturas cadastradas
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [PENDING, PAID, CANCELLED]
+      responses:
+        '200':
+          description: Lista de faturas retornada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Invoice'
+
+  /api/v1/invoices/work-order/{workOrderId}:
+    get:
+      tags:
+        - Invoices
+      summary: Consulta a fatura de uma Ordem de Serviço específica
+      parameters:
+        - name: workOrderId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Fatura encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Invoice'
+        '404':
+          description: Fatura não encontrada
+
+  /api/v1/payments/{invoiceId}/process:
+    post:
+      tags:
+        - Payments
+      summary: Simula o processamento interno de um pagamento (Bypass / Teste)
+      description: |
+        Marca a fatura como paga (`PAID`) e publica o evento `payment.approved`
+        na Saga para iniciar a produção no `tc-production-service`.
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - method
+              properties:
+                amount:
+                  type: number
+                  format: float
+                method:
+                  type: string
+                  enum: [CREDIT_CARD, PIX, BOLETO]
+      responses:
+        '200':
+          description: Pagamento processado e evento publicado
+
+  /api/v1/webhooks/mercadopago:
+    post:
+      tags:
+        - Payments
+      summary: Webhook para conciliação de pagamentos via Mercado Pago
+      description: |
+        Endpoint público que recebe atualizações de status de pagamento do Mercado Pago (IPN).
+        Se aprovado, despacha o evento `payment.approved`. Se rejeitado, despacha `payment.rejected`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  example: payment.updated
+                data:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: 123456789
+      responses:
+        '200':
+          description: Notificação recebida e processada
+        '400':
+          description: Payload inválido do Mercado Pago
+
+components:
+  schemas:
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 50
+        work_order_id:
+          type: integer
+          example: 101
+        customer_id:
+          type: integer
+          example: 25
+        total_amount:
+          type: number
+          format: float
+          example: 1250.50
+        status:
+          type: string
+          enum: [PENDING, PAID, CANCELLED]
+          example: PENDING
+        payment_method:
+          type: string
+          nullable: true
+          example: null
+        paid_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: null
