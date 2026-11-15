@@ -120,12 +120,19 @@ final class RabbitMQService
 
     public function close(): void
     {
-        if ($this->channel !== null && $this->channel->is_open()) {
-            $this->channel->close();
-        }
+        try {
+            if ($this->channel !== null && $this->channel->getChannelId() !== null) {
+                $this->channel->close();
+            }
 
-        if ($this->connection !== null && $this->connection->isConnected()) {
-            $this->connection->close();
+            if ($this->connection !== null && $this->connection->isConnected()) {
+                $this->connection->close();
+            }
+        } catch (\Throwable $e) {
+            // Ignora falhas de encerramento caso o socket já tenha sido fechado
+        } finally {
+            $this->channel = null;
+            $this->connection = null;
         }
     }
 
