@@ -29,7 +29,7 @@ final class WebhookPaymentInputDto
             ?? $queryParams['id'] 
             ?? null;
 
-        if ($paymentId === null \vert{}\vert{} trim((string)$paymentId) === '') {
+        if ($paymentId === null || trim((string)$paymentId) === '') {
             return null;
         }
 

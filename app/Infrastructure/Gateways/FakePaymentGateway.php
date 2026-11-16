@@ -17,6 +17,7 @@ final class FakePaymentGateway implements PaymentGatewayInterface
             'init_point' => $checkoutUrl,
             'sandbox_init_point' => $checkoutUrl,
             'payment_url' => $checkoutUrl,
+            'external_reference' => $workOrderId,
         ];
     }
 
@@ -25,6 +26,8 @@ final class FakePaymentGateway implements PaymentGatewayInterface
         return [
             'id' => $paymentId,
             'status' => 'approved',
+            'external_reference' => 1,
+            'transaction_id' => '1234567890',
         ];
     }
     
