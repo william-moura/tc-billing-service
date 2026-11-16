@@ -53,4 +53,9 @@ final class InvoiceMongoRepository implements InvoiceRepositoryInterface
 
         return $model !== null ? InvoiceMapper::toDomain($model) : null;
     }
+
+    public function findAll(): array
+    {
+        return InvoiceMongoModel::all()->map(fn(InvoiceMongoModel $model) => InvoiceMapper::toDomain($model))->toArray();
+    }
 }
