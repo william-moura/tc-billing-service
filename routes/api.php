@@ -1,7 +1,9 @@
 <?php
 
 use App\Presentation\Http\Controllers\InvoiceController;
+use App\Presentation\Http\Controllers\ListInvoicesController;
 use App\Presentation\Http\Controllers\PaymentWebhookController;
+use App\Presentation\Http\Controllers\ShowInvoiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -11,9 +13,10 @@ Route::get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function (): void {
     // Endpoints de consulta de Faturas
-    Route::get('/invoices/{id}', [InvoiceController::class, 'show']);
+    Route::get('/invoices', ListInvoicesController::class);
+    Route::get('/invoices/{id}', [ShowInvoiceController::class, 'show']);
     Route::get('/invoices/work-order/{workOrderId}', [InvoiceController::class, 'findByWorkOrder']);
 
     // Webhook Mercado Pago
-    Route::post('/payments/webhook', [PaymentWebhookController::class, 'handle']);
+    Route::post('/webhooks/mercadopago', [PaymentWebhookController::class, 'handle']);
 });

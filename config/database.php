@@ -113,6 +113,11 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
+        'mongodb' => [
+            'driver' => 'mongodb',
+            'dsn' => env('MONGODB_URI', 'mongodb://mongodb-production:27017'),
+            'database' => env('MONGODB_DATABASE', 'tc_billing'),
+        ],
 
     ],
 

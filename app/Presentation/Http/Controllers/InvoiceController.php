@@ -56,4 +56,12 @@ final class InvoiceController extends Controller
             'data' => $dto->toArray(),
         ], 200);
     }
+    public function index(): JsonResponse
+    {
+        $invoices = $this->repository->findAll();
+
+        return response()->json([
+            'data' => $invoices,
+        ], 200);
+    }
 }
