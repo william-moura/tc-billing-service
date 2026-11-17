@@ -1,7 +1,6 @@
 <?php
 
 use App\Presentation\Http\Controllers\GetInvoiceByWorkOrderController;
-use App\Presentation\Http\Controllers\InvoiceController;
 use App\Presentation\Http\Controllers\ListInvoicesController;
 use App\Presentation\Http\Controllers\PaymentWebhookController;
 use App\Presentation\Http\Controllers\ShowInvoiceController;

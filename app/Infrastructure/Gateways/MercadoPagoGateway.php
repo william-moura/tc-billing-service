@@ -34,7 +34,7 @@ final class MercadoPagoGateway implements PaymentGatewayInterface
                     ],
                 ],
                 'external_reference' => (string) $workOrderId,
-                'notification_url' => rtrim((string) env('APP_URL'), '/') . '/api/v1/webhooks/mercadopago',
+                'notification_url' => rtrim((string) env('APP_URL'), '/').'/api/v1/webhooks/mercadopago',
             ]);
 
         if ($response->failed()) {

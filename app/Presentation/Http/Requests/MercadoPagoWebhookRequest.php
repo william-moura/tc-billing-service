@@ -27,7 +27,7 @@ final class MercadoPagoWebhookRequest extends FormRequest
             'type' => ['nullable'],
             'topic' => ['nullable'],
             'action' => ['nullable'],
-            'data.id' => ['nullable' ],
+            'data.id' => ['nullable'],
             'data_id' => ['nullable'],
             'id' => ['nullable'],
             'live_mode' => ['nullable'],
