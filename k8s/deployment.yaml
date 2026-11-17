@@ -91,13 +91,14 @@ kind: Service
 metadata:
   name: tc-billing-service
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: tc-billing-service
     component: api
   ports:
     - port: 80
       targetPort: http
+      nodePort: 30082
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
