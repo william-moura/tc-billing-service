@@ -13,11 +13,26 @@ final class PaymentAttempt
         private readonly string $transactionId,
         private readonly PaymentStatus $status,
         private readonly ?string $gatewayMessage = null,
-        private readonly DateTimeImmutable $createdAt = new DateTimeImmutable()
+        private readonly DateTimeImmutable $createdAt = new DateTimeImmutable
     ) {}
 
-    public function getTransactionId(): string { return $this->transactionId; }
-    public function getStatus(): PaymentStatus { return $this->status; }
-    public function getGatewayMessage(): ?string { return $this->gatewayMessage; }
-    public function getCreatedAt(): DateTimeImmutable { return $this->createdAt; }
+    public function getTransactionId(): string
+    {
+        return $this->transactionId;
+    }
+
+    public function getStatus(): PaymentStatus
+    {
+        return $this->status;
+    }
+
+    public function getGatewayMessage(): ?string
+    {
+        return $this->gatewayMessage;
+    }
+
+    public function getCreatedAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
 }

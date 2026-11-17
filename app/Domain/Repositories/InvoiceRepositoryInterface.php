@@ -9,8 +9,12 @@ use App\Domain\Entities\Invoice;
 interface InvoiceRepositoryInterface
 {
     public function save(Invoice $invoice): Invoice;
+
     public function findById(string $id): ?Invoice;
+
     public function findByWorkOrderId(int $workOrderId): ?Invoice;
+
     public function findByPreferenceId(string $preferenceId): ?Invoice;
+
     public function findAll(): array;
 }

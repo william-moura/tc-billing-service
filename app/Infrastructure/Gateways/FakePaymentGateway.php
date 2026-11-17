@@ -9,8 +9,9 @@ final class FakePaymentGateway implements PaymentGatewayInterface
 {
     public function createPreference(int $workOrderId, Money $amount, string $description): array
     {
-        $preferenceId = 'pref_test_' . uniqid();
-        $checkoutUrl = 'https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id=' . $preferenceId;
+        $preferenceId = 'pref_test_'.uniqid();
+        $checkoutUrl = 'https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id='.$preferenceId;
+
         return [
             'id' => $preferenceId,
             'preference_id' => $preferenceId,
@@ -30,7 +31,7 @@ final class FakePaymentGateway implements PaymentGatewayInterface
             'transaction_id' => '1234567890',
         ];
     }
-    
+
     public function refund(string $paymentId): bool
     {
         return true;

@@ -12,6 +12,7 @@ use RuntimeException;
 final class MercadoPagoGateway implements PaymentGatewayInterface
 {
     private string $accessToken;
+
     private string $baseUrl;
 
     public function __construct()
@@ -33,18 +34,22 @@ final class MercadoPagoGateway implements PaymentGatewayInterface
                     ],
                 ],
                 'external_reference' => (string) $workOrderId,
-                'notification_url' => env('APP_URL') . '/api/v1/payments/webhook',
+                'notification_url' => env('APP_URL').'/api/v1/payments/webhook',
             ]);
 
         if ($response->failed()) {
-            throw new RuntimeException("Mercado Pago preference creation failed: " . $response->body());
+            throw new RuntimeException('Mercado Pago preference creation failed: '.$response->body());
         }
 
         $data = $response->json();
+        $checkoutUrl = $data['init_point'] ?? $data['sandbox_init_point'];
 
         return [
+            'id' => $data['id'],
             'preference_id' => $data['id'],
-            'init_point' => $data['init_point'] ?? $data['sandbox_init_point'],
+            'init_point' => $checkoutUrl,
+            'sandbox_init_point' => $checkoutUrl,
+            'payment_url' => $checkoutUrl,
         ];
     }
 
@@ -53,7 +58,7 @@ final class MercadoPagoGateway implements PaymentGatewayInterface
         $response = Http::withToken($this->accessToken)->get("{$this->baseUrl}/v1/payments/{$paymentId}");
 
         if ($response->failed()) {
-            throw new RuntimeException("Failed to fetch payment details from Mercado Pago.");
+            throw new RuntimeException('Failed to fetch payment details from Mercado Pago.');
         }
 
         $data = $response->json();
@@ -68,6 +73,7 @@ final class MercadoPagoGateway implements PaymentGatewayInterface
     public function refund(string $paymentId): bool
     {
         $response = Http::withToken($this->accessToken)->post("{$this->baseUrl}/v1/payments/{$paymentId}/refunds");
+
         return $response->successful();
     }
 }

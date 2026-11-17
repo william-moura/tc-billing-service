@@ -11,13 +11,13 @@ final class MercadoPagoWebhookRequestTest extends TestCase
 {
     public function test_should_authorize_request(): void
     {
-        $request = new MercadoPagoWebhookRequest();
+        $request = new MercadoPagoWebhookRequest;
         $this->assertTrue($request->authorize());
     }
 
     public function test_should_contain_expected_validation_rules(): void
     {
-        $request = new MercadoPagoWebhookRequest();
+        $request = new MercadoPagoWebhookRequest;
         $rules = $request->rules();
 
         $this->assertArrayHasKey('type', $rules);
@@ -28,7 +28,7 @@ final class MercadoPagoWebhookRequestTest extends TestCase
 
     public function test_to_dto_should_build_valid_dto_from_json_body(): void
     {
-        $request = new MercadoPagoWebhookRequest();
+        $request = new MercadoPagoWebhookRequest;
         $request->initialize(
             request: [
                 'type' => 'payment',
@@ -47,7 +47,7 @@ final class MercadoPagoWebhookRequestTest extends TestCase
 
     public function test_to_dto_should_build_valid_dto_from_query_params(): void
     {
-        $request = new MercadoPagoWebhookRequest();
+        $request = new MercadoPagoWebhookRequest;
         $request->initialize(
             query: [
                 'type' => 'payment',

@@ -16,7 +16,7 @@ final class CreateInvoiceInputDto
     /**
      * Instancia o DTO a partir de um array associativo (ex: payload vindo da fila RabbitMQ).
      *
-     * @param array{work_order_id: int|numeric, customer_id: int|numeric, total_amount: float|numeric, currency?: string} $data
+     * @param  array{work_order_id: int|numeric, customer_id: int|numeric, total_amount: float|numeric, currency?: string}  $data
      */
     public static function fromPayload(array $data): self
     {

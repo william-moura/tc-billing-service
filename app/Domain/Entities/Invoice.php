@@ -21,7 +21,7 @@ final class Invoice
         private ?string $preferenceId = null,
         private ?string $paymentUrl = null,
         private array $attempts = [],
-        private readonly DateTimeImmutable $createdAt = new DateTimeImmutable()
+        private readonly DateTimeImmutable $createdAt = new DateTimeImmutable
     ) {}
 
     public static function create(int $workOrderId, int $customerId, Money $amount): self
@@ -71,13 +71,48 @@ final class Invoice
         $this->attempts[] = new PaymentAttempt($transactionId, PaymentStatus::REFUNDED, 'Compensating transaction: Refund');
     }
 
-    public function getId(): ?string { return $this->id; }
-    public function getWorkOrderId(): int { return $this->workOrderId; }
-    public function getCustomerId(): int { return $this->customerId; }
-    public function getAmount(): Money { return $this->amount; }
-    public function getStatus(): PaymentStatus { return $this->status; }
-    public function getPreferenceId(): ?string { return $this->preferenceId; }
-    public function getPaymentUrl(): ?string { return $this->paymentUrl; }
-    public function getAttempts(): array { return $this->attempts; }
-    public function getCreatedAt(): DateTimeImmutable { return $this->createdAt; }
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    public function getWorkOrderId(): int
+    {
+        return $this->workOrderId;
+    }
+
+    public function getCustomerId(): int
+    {
+        return $this->customerId;
+    }
+
+    public function getAmount(): Money
+    {
+        return $this->amount;
+    }
+
+    public function getStatus(): PaymentStatus
+    {
+        return $this->status;
+    }
+
+    public function getPreferenceId(): ?string
+    {
+        return $this->preferenceId;
+    }
+
+    public function getPaymentUrl(): ?string
+    {
+        return $this->paymentUrl;
+    }
+
+    public function getAttempts(): array
+    {
+        return $this->attempts;
+    }
+
+    public function getCreatedAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
 }

@@ -23,7 +23,7 @@ final class ProcessPaymentWebhookUseCase
         $workOrderId = (int) $paymentData['external_reference'];
 
         $invoice = $this->repository->findByWorkOrderId($workOrderId);
-        if (!$invoice) {
+        if (! $invoice) {
             throw new InvoiceNotFoundException("Invoice for Work Order #{$workOrderId} not found.");
         }
 
@@ -39,6 +39,7 @@ final class ProcessPaymentWebhookUseCase
                 'transaction_id' => $paymentData['transaction_id'],
                 'amount' => $invoice->getAmount()->getAmount(),
             ]);
+
             return;
         }
 
