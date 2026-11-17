@@ -44,36 +44,14 @@ jobs:
           timeout: 5m
           command_timeout: 5m
           script: |
-            export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+            set -e
+            cd ~/saga-oficina/tc-billing-service
+            git fetch origin
+            git reset --hard origin/${{ github.ref_name }}
 
-            # 1. Garantir que o namespace isolado existe
-            k3s kubectl create namespace oficina-mecanica --dry-run=client -o yaml | k3s kubectl apply -f -
+            docker build -t tc-billing-service:latest .
+            docker save tc-billing-service:latest | sudo k3s ctr images import -
+            docker image prune -f
 
-            # 2. Criar Secret do GHCR dentro do namespace 'oficina-mecanica'
-            k3s kubectl create secret docker-registry ghcr-secret \
-              --docker-server=ghcr.io \
-              --docker-username=${{ github.actor }} \
-              --docker-password=${{ secrets.GITHUB_TOKEN }} \
-              --namespace=oficina-mecanica --dry-run=client -o yaml | k3s kubectl apply -f -
-
-            # 3. Aplicar manifestos se não existirem no namespace
-            if ! k3s kubectl get deployment/tc-app-laravel -n oficina-mecanica &> /dev/null; then
-              echo "=== Aplicando manifestos base no namespace oficina-mecanica... ==="
-              apt-get update && apt-get install -y git
-              rm -rf ~/repo-infra && mkdir -p ~/repo-infra
-              git clone https://github.com/william-moura/tc-soat-k8s-infra.git ~/repo-infra
-              k3s kubectl apply -f ~/repo-infra/k8s-manifests/ -n oficina-mecanica
-              rm -rf ~/repo-infra
-            fi
-
-            # 4. Atualizar imagem e fazer rollout no namespace 'oficina-mecanica'
-            k3s kubectl set image deployment/tc-app-laravel laravel=ghcr.io/${{ github.repository_owner }}/tc-billing-service:latest -n oficina-mecanica
-            k3s kubectl rollout restart deployment/tc-app-laravel -n oficina-mecanica
-            k3s kubectl rollout status deployment/tc-app-laravel -n oficina-mecanica --timeout=60s
-
-            # 5. Executar Migrations
-            POD_NAME=$(k3s kubectl get pods -l app=tc-app-laravel -n oficina-mecanica -o jsonpath="{.items[0].metadata.name}")
-            if [ -n "$POD_NAME" ]; then
-              echo "=== Executando artisan migrate no namespace oficina-mecanica... ==="
-              k3s kubectl exec $POD_NAME -n oficina-mecanica -c laravel -- php artisan migrate --force
-            fi
+            sudo k3s kubectl rollout restart deployment/billing-api -n saga-oficina
+            sudo k3s kubectl rollout status deployment/billing-api -n saga-oficina --timeout=90s
