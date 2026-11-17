@@ -6,7 +6,7 @@ namespace Tests\Unit\Infrastructure;
 
 use App\Infrastructure\Messaging\Publishers\BillingRabbitMQPublisher;
 use App\Infrastructure\Messaging\RabbitMQService;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 final class BillingRabbitMQPublisherTest extends TestCase
 {

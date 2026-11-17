@@ -13,7 +13,7 @@ use App\Domain\Repositories\InvoiceRepositoryInterface;
 use App\Domain\ValueObjects\PaymentStatus;
 use RuntimeException;
 
-final class RefundPaymentUseCase
+class RefundPaymentUseCase
 {
     public function __construct(
         private readonly InvoiceRepositoryInterface $repository,

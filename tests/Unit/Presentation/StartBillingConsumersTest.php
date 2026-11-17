@@ -23,7 +23,7 @@ final class StartBillingConsumersTest extends TestCase
         $abortedConsumer->expects($this->never())->method('handle');
 
         $command = new StartBillingConsumers;
-        $input = new ArrayInput(['--queue' => 'workorder-created']);
+        $input = new ArrayInput(['--queue' => 'workorder-created'], $command->getDefinition());
         $output = new BufferedOutput;
 
         $command->setInput($input);
@@ -43,7 +43,7 @@ final class StartBillingConsumersTest extends TestCase
         $abortedConsumer->expects($this->once())->method('handle');
 
         $command = new StartBillingConsumers;
-        $input = new ArrayInput(['--queue' => 'production-aborted']);
+        $input = new ArrayInput(['--queue' => 'production-aborted'], $command->getDefinition());
         $output = new BufferedOutput;
 
         $command->setInput($input);

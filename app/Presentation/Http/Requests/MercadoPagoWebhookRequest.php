@@ -41,6 +41,10 @@ final class MercadoPagoWebhookRequest extends FormRequest
     {
         $payload = $this->all();
 
+        if ($payload === [] && $this->request->all() !== []) {
+            $payload = $this->request->all();
+        }
+
         if ($payload === [] && $this->getContent() !== '') {
             $decoded = json_decode($this->getContent(), true);
             if (is_array($decoded)) {

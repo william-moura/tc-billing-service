@@ -26,6 +26,7 @@ jobs:
 
       - name: Run Code Style (Pint)
         run: ./vendor/bin/pint --test
-
+      - name: Prepare environment file
+        run: cp .env.example .env && php artisan key:generate
       - name: Run Unit Tests
         run: php artisan test --testsuite=Unit
