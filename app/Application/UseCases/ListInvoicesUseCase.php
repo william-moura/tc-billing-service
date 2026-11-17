@@ -18,6 +18,11 @@ final class ListInvoicesUseCase
     {
         $invoices = $this->repository->findAll();
         
-        return array_map(fn(Invoice $invoice) => InvoiceOutputDto::fromDomain($invoice), $invoices);
+        $invoices = array_map(
+            fn($invoice) => InvoiceOutputDto::fromDomain($invoice)->toArray(),
+            $this->repository->findAll()
+        );
+
+        return $invoices;
     }
 }
