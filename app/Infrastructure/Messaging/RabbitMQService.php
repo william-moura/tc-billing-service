@@ -11,7 +11,7 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-final class RabbitMQService
+class RabbitMQService
 {
     private ?AMQPStreamConnection $connection = null;
 

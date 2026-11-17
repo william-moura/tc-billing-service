@@ -27,7 +27,7 @@ final class MercadoPagoWebhookRequest extends FormRequest
             'type' => ['nullable'],
             'topic' => ['nullable'],
             'action' => ['nullable'],
-            'data.id' => ['nullable' ],
+            'data.id' => ['nullable'],
             'data_id' => ['nullable'],
             'id' => ['nullable'],
             'live_mode' => ['nullable'],
@@ -39,8 +39,21 @@ final class MercadoPagoWebhookRequest extends FormRequest
      */
     public function toDto(): ?WebhookPaymentInputDto
     {
+        $payload = $this->all();
+
+        if ($payload === [] && $this->request->all() !== []) {
+            $payload = $this->request->all();
+        }
+
+        if ($payload === [] && $this->getContent() !== '') {
+            $decoded = json_decode($this->getContent(), true);
+            if (is_array($decoded)) {
+                $payload = $decoded;
+            }
+        }
+
         return WebhookPaymentInputDto::fromRequestData(
-            data: $this->all(),
+            data: $payload,
             queryParams: $this->query()
         );
     }
