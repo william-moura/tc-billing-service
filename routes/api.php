@@ -1,5 +1,6 @@
 <?php
 
+use App\Presentation\Http\Controllers\GetInvoiceByWorkOrderController;
 use App\Presentation\Http\Controllers\InvoiceController;
 use App\Presentation\Http\Controllers\ListInvoicesController;
 use App\Presentation\Http\Controllers\PaymentWebhookController;
@@ -15,7 +16,7 @@ Route::prefix('v1')->group(function (): void {
     // Endpoints de consulta de Faturas
     Route::get('/invoices', ListInvoicesController::class);
     Route::get('/invoices/{id}', [ShowInvoiceController::class, 'show']);
-    Route::get('/invoices/work-order/{workOrderId}', [InvoiceController::class, 'findByWorkOrder']);
+    Route::get('/invoices/work-order/{workOrderId}', GetInvoiceByWorkOrderController::class);
 
     // Webhook Mercado Pago
     Route::post('/payments/webhook', [PaymentWebhookController::class, 'handle']);
