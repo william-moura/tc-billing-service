@@ -8,8 +8,8 @@ use App\Application\Services\MessagePublisherInterface;
 use App\Application\Services\PaymentGatewayInterface;
 use App\Application\UseCases\RefundPaymentUseCase;
 use App\Domain\Entities\Invoice;
-use App\Domain\Exceptions\InvoiceNotFoundException;
 use App\Domain\Exceptions\InvalidPaymentOperationException;
+use App\Domain\Exceptions\InvoiceNotFoundException;
 use App\Domain\Repositories\InvoiceRepositoryInterface;
 use App\Domain\ValueObjects\Money;
 use App\Domain\ValueObjects\PaymentStatus;
@@ -31,7 +31,7 @@ final class RefundPaymentUseCaseTest extends TestCase
 
         $repository->expects($this->once())
             ->method('save')
-            ->willReturnCallback(fn(Invoice $inv) => $inv);
+            ->willReturnCallback(fn (Invoice $inv) => $inv);
 
         $gateway = $this->createMock(PaymentGatewayInterface::class);
         $gateway->expects($this->once())
