@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(RabbitMQService::class, fn () => RabbitMQService::fromEnv());
         $this->app->bind(MessagePublisherInterface::class, BillingRabbitMQPublisher::class);
         $this->app->bind(InvoiceRepositoryInterface::class, InvoiceMongoRepository::class);
-        $this->app->bind(PaymentGatewayInterface::class, FakePaymentGateway::class);
+        $this->app->bind(PaymentGatewayInterface::class, MercadoPagoGateway::class);
     }
 
     /**

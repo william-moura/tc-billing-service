@@ -102,7 +102,7 @@ paths:
         '200':
           description: Pagamento processado e evento publicado
 
-  /api/v1/webhooks/mercadopago:
+  /api/v1/payments/webhook:
     post:
       tags:
         - Payments

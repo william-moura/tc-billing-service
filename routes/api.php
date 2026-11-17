@@ -18,5 +18,5 @@ Route::prefix('v1')->group(function (): void {
     Route::get('/invoices/work-order/{workOrderId}', [InvoiceController::class, 'findByWorkOrder']);
 
     // Webhook Mercado Pago
-    Route::post('/webhooks/mercadopago', [PaymentWebhookController::class, 'handle']);
+    Route::post('/payments/webhook', [PaymentWebhookController::class, 'handle']);
 });
