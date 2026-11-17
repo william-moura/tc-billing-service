@@ -7,8 +7,8 @@ info:
   version: 1.0.0
 
 servers:
-  - url: http://localhost:8002
-    description: Ambiente Local
+  - url: /
+    description: Servidor billing-service VPS
   - url: http://tc-billing-service
     description: Cluster Kubernetes (Interno)
 
