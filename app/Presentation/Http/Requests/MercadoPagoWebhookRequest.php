@@ -24,13 +24,13 @@ final class MercadoPagoWebhookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => ['nullable', 'string'],
-            'topic' => ['nullable', 'string'],
-            'action' => ['nullable', 'string'],
-            'data.id' => ['nullable', 'string'],
-            'data_id' => ['nullable', 'string'],
-            'id' => ['nullable', 'string'],
-            'live_mode' => ['nullable', 'boolean'],
+            'type' => ['nullable'],
+            'topic' => ['nullable'],
+            'action' => ['nullable'],
+            'data.id' => ['nullable' ],
+            'data_id' => ['nullable'],
+            'id' => ['nullable'],
+            'live_mode' => ['nullable'],
         ];
     }
 
