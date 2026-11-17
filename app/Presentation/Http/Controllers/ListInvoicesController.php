@@ -15,8 +15,9 @@ final class ListInvoicesController extends Controller
 
     public function __invoke(Request $request): JsonResponse
     {
-        
+
         $invoices = $this->listInvoicesUseCase->execute();
+
         return response()->json($invoices);
     }
 }

@@ -7,7 +7,6 @@ namespace App\Presentation\Http\Controllers;
 use App\Application\UseCases\ProcessPaymentWebhookUseCase;
 use App\Presentation\Http\Requests\MercadoPagoWebhookRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 final class PaymentWebhookController extends Controller

@@ -27,6 +27,7 @@ final class ShowInvoiceController extends Controller
             'data' => $invoice->toArray(),
         ], 200);
     }
+
     public function show(string $id): JsonResponse
     {
         $invoice = $this->useCase->execute($id);

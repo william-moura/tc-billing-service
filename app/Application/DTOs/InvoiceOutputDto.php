@@ -10,7 +10,7 @@ use App\Domain\Entities\PaymentAttempt;
 final class InvoiceOutputDto
 {
     /**
-     * @param array<array{transaction_id: string, status: string, gateway_message: string|null, created_at: string}> $attempts
+     * @param  array<array{transaction_id: string, status: string, gateway_message: string|null, created_at: string}>  $attempts
      */
     public function __construct(
         public readonly ?string $id,
@@ -28,7 +28,7 @@ final class InvoiceOutputDto
     public static function fromDomain(Invoice $invoice): self
     {
         $attempts = array_map(
-            fn(PaymentAttempt $attempt) => [
+            fn (PaymentAttempt $attempt) => [
                 'transaction_id' => $attempt->getTransactionId(),
                 'status' => $attempt->getStatus()->value,
                 'gateway_message' => $attempt->getGatewayMessage(),

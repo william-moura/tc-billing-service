@@ -7,8 +7,8 @@ namespace App\Application\UseCases;
 use App\Application\DTOs\InvoiceOutputDto;
 use App\Application\Services\MessagePublisherInterface;
 use App\Application\Services\PaymentGatewayInterface;
-use App\Domain\Exceptions\InvoiceNotFoundException;
 use App\Domain\Exceptions\InvalidPaymentOperationException;
+use App\Domain\Exceptions\InvoiceNotFoundException;
 use App\Domain\Repositories\InvoiceRepositoryInterface;
 use App\Domain\ValueObjects\PaymentStatus;
 use RuntimeException;
@@ -21,11 +21,11 @@ final class RefundPaymentUseCase
         private readonly MessagePublisherInterface $publisher
     ) {}
 
-    public function execute(int $workOrderId, string$reason): InvoiceOutputDto
+    public function execute(int $workOrderId, string $reason): InvoiceOutputDto
     {
         $invoice = $this->repository->findByWorkOrderId($workOrderId);
 
-        if (!$invoice) {
+        if (! $invoice) {
             throw new InvoiceNotFoundException("Invoice for Work Order #{$workOrderId} not found.");
         }
 
@@ -37,21 +37,21 @@ final class RefundPaymentUseCase
 
         // Obtém o ID da transação da última tentativa de pagamento aprovada
         $approvedAttempt = null;
-        foreach (array_reverse($invoice->getAttempts()) as$attempt) {
+        foreach (array_reverse($invoice->getAttempts()) as $attempt) {
             if ($attempt->getStatus() === PaymentStatus::APPROVED) {
-                $approvedAttempt =$attempt;
+                $approvedAttempt = $attempt;
                 break;
             }
         }
 
-        if (!$approvedAttempt) {
+        if (! $approvedAttempt) {
             throw new InvalidPaymentOperationException("No approved transaction ID found for Work Order #{$workOrderId}.");
         }
 
         // Solicita o estorno na API do gateway de pagamento
         $refundSuccessful = $this->paymentGateway->refund($approvedAttempt->getTransactionId());
 
-        if (!$refundSuccessful) {
+        if (! $refundSuccessful) {
             throw new RuntimeException("Gateway failed to process refund for transaction {$approvedAttempt->getTransactionId()}.");
         }
 

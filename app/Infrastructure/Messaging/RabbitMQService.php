@@ -14,6 +14,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 final class RabbitMQService
 {
     private ?AMQPStreamConnection $connection = null;
+
     private ?AMQPChannel $channel = null;
 
     public function __construct(
@@ -37,8 +38,8 @@ final class RabbitMQService
 
     public function getChannel(): AMQPChannel
     {
-        if ($this->channel === null || !$this->channel->is_open()) {
-            if ($this->connection === null || !$this->connection->isConnected()) {
+        if ($this->channel === null || ! $this->channel->is_open()) {
+            if ($this->connection === null || ! $this->connection->isConnected()) {
                 $this->connection = new AMQPStreamConnection(
                     $this->host,
                     $this->port,
@@ -57,7 +58,7 @@ final class RabbitMQService
     /**
      * Declara uma fila persistente e publica o payload em formato JSON.
      *
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
      */
     public function publish(string $queue, array $payload): void
     {

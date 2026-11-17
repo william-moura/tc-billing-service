@@ -20,6 +20,7 @@ final class InvoiceMongoRepository implements InvoiceRepositoryInterface
 
             if ($model !== null) {
                 $model->update($documentData);
+
                 return InvoiceMapper::toDomain($model->fresh());
             }
         }
@@ -56,6 +57,6 @@ final class InvoiceMongoRepository implements InvoiceRepositoryInterface
 
     public function findAll(): array
     {
-        return InvoiceMongoModel::all()->map(fn(InvoiceMongoModel $model) => InvoiceMapper::toDomain($model))->toArray();
+        return InvoiceMongoModel::all()->map(fn (InvoiceMongoModel $model) => InvoiceMapper::toDomain($model))->toArray();
     }
 }

@@ -33,6 +33,7 @@ final class ProductionAbortedConsumer
                         'payload' => $payload,
                     ]);
                     $message->ack();
+
                     return;
                 }
 

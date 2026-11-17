@@ -8,7 +8,6 @@ use App\Application\DTOs\InvoiceOutputDto;
 use App\Domain\Exceptions\InvoiceNotFoundException;
 use App\Domain\Repositories\InvoiceRepositoryInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 
 final class InvoiceController extends Controller
@@ -56,6 +55,7 @@ final class InvoiceController extends Controller
             'data' => $dto->toArray(),
         ], 200);
     }
+
     public function index(): JsonResponse
     {
         $invoices = $this->repository->findAll();

@@ -46,6 +46,7 @@ final class StartBillingConsumers extends Command
             return self::SUCCESS;
         } catch (Throwable $e) {
             $this->error("Critical error while consuming messages: {$e->getMessage()}");
+
             return self::FAILURE;
         }
     }
@@ -68,7 +69,7 @@ final class StartBillingConsumers extends Command
     ): void {
         $this->line('<comment>[*] Starting default consumer loop (queue.workorder.created)...</comment>');
         $this->comment('Tip: To run multiple queues simultaneously in production, start individual workers with --queue=...');
-        
+
         $workOrderCreatedConsumer->handle();
     }
 

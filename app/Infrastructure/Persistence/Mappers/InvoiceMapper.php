@@ -16,7 +16,7 @@ final class InvoiceMapper
     public static function toDomain(InvoiceMongoModel $model): Invoice
     {
         $attempts = array_map(
-            fn(array $att) => new PaymentAttempt(
+            fn (array $att) => new PaymentAttempt(
                 transactionId: $att['transaction_id'],
                 status: PaymentStatus::from($att['status']),
                 gatewayMessage: $att['gateway_message'] ?? null,
@@ -48,7 +48,7 @@ final class InvoiceMapper
             'status' => $invoice->getStatus()->value,
             'preference_id' => $invoice->getPreferenceId(),
             'payment_url' => $invoice->getPaymentUrl(),
-            'attempts' => array_map(fn(PaymentAttempt $att) => [
+            'attempts' => array_map(fn (PaymentAttempt $att) => [
                 'transaction_id' => $att->getTransactionId(),
                 'status' => $att->getStatus()->value,
                 'gateway_message' => $att->getGatewayMessage(),

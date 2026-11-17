@@ -13,7 +13,7 @@ final class PaymentApprovedDomainEvent
         public readonly int $customerId,
         public readonly string $transactionId,
         public readonly float $amount,
-        public readonly DateTimeImmutable $occurredOn = new DateTimeImmutable()
+        public readonly DateTimeImmutable $occurredOn = new DateTimeImmutable
     ) {}
 
     /**
