@@ -10,7 +10,7 @@ use App\Infrastructure\Messaging\Consumers\ProductionAbortedConsumer;
 use App\Infrastructure\Messaging\RabbitMQService;
 use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 final class ProductionAbortedConsumerTest extends TestCase
 {

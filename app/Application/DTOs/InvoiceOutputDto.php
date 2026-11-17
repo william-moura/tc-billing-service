@@ -7,7 +7,7 @@ namespace App\Application\DTOs;
 use App\Domain\Entities\Invoice;
 use App\Domain\Entities\PaymentAttempt;
 
-final class InvoiceOutputDto
+class InvoiceOutputDto
 {
     /**
      * @param  array<array{transaction_id: string, status: string, gateway_message: string|null, created_at: string}>  $attempts
