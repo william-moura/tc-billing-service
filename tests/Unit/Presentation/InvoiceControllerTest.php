@@ -12,7 +12,7 @@ use App\Domain\ValueObjects\PaymentStatus;
 use App\Presentation\Http\Controllers\InvoiceController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 final class InvoiceControllerTest extends TestCase
 {

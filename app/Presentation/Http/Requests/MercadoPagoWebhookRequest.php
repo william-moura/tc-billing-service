@@ -39,8 +39,17 @@ final class MercadoPagoWebhookRequest extends FormRequest
      */
     public function toDto(): ?WebhookPaymentInputDto
     {
+        $payload = $this->all();
+
+        if ($payload === [] && $this->getContent() !== '') {
+            $decoded = json_decode($this->getContent(), true);
+            if (is_array($decoded)) {
+                $payload = $decoded;
+            }
+        }
+
         return WebhookPaymentInputDto::fromRequestData(
-            data: $this->all(),
+            data: $payload,
             queryParams: $this->query()
         );
     }

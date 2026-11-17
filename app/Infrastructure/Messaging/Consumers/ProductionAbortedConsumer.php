@@ -10,7 +10,7 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use PhpAmqpLib\Message\AMQPMessage;
 
-final class ProductionAbortedConsumer
+class ProductionAbortedConsumer
 {
     private const QUEUE_NAME = 'queue.production.aborted';
 

@@ -53,6 +53,9 @@ final class Invoice
 
     public function markAsRejected(string $transactionId, string $reason): void
     {
+        if ($this->status === PaymentStatus::APPROVED) {
+            throw new InvalidPaymentOperationException('Cannot reject an already approved invoice.');
+        }
         if ($this->status === PaymentStatus::REFUNDED) {
             throw new InvalidPaymentOperationException('Cannot reject an already approved invoice.');
         }

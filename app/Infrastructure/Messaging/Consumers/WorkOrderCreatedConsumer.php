@@ -11,7 +11,7 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use PhpAmqpLib\Message\AMQPMessage;
 
-final class WorkOrderCreatedConsumer
+class WorkOrderCreatedConsumer
 {
     public function __construct(
         private readonly RabbitMQService $rabbitMQService,
