@@ -37,7 +37,6 @@ final class GetInvoiceByWorkOrderController extends Controller
                     static fn ($attempt): array => [
                         'transaction_id' => $attempt->getTransactionId(),
                         'status' => $attempt->getStatus()->value,
-                        'reason' => $attempt->getReason(),
                         'created_at' => $attempt->getCreatedAt()->format(DATE_ATOM),
                     ],
                     $invoice->getAttempts()
